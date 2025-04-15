@@ -1,9 +1,12 @@
 require('dotenv').config();
 
 const { Sequelize,DataTypes } = require('sequelize');
-const usuarioModelo = require('../modelos/usuario');
-const pokemonModelo = require('../modelos/pokemon');
-const capturadoModelo = require('../modelos/pokemonCapturado');
+
+const defineEstudiante = require('../modelos/estudiante');
+const defineMateria = require('../modelos/materia');
+const defineProfesor = require('../modelos/profesor');
+const defineMateriaProfesor = require('../modelos/materia_profesor');
+const defineMateriaEstudiante = require('../modelos/inscripcion_materias');
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -15,9 +18,11 @@ const sequelize = new Sequelize(
   }
 );
 
-const Usuario = usuarioModelo(sequelize, DataTypes);
-const Pokemon = pokemonModelo(sequelize, DataTypes);
-const Capturado = capturadoModelo(sequelize, DataTypes);
+const Estudiante = defineEstudiante(sequelize, DataTypes);
+const Materia = defineMateria(sequelize, DataTypes);
+const Profesor = defineProfesor(sequelize, DataTypes);
+const MateriaProfesor = defineMateriaProfesor(sequelize, DataTypes);
+const MateriaEstudiante = defineMateriaEstudiante(sequelize, DataTypes);
 
 sequelize.authenticate()
   .then(() => console.log('Conectado a la base de datos.'))
@@ -28,8 +33,10 @@ sequelize.sync({ alter: true, force: false })
   .catch(err => console.error('Error en la sincronización:', err));
 
 module.exports = {
-    Usuario,
-    Pokemon,
-    Capturado,
+    Estudiante,
+    Materia,
+    Profesor,
+    MateriaProfesor,
+    MateriaEstudiante,
     sequelize
 };
